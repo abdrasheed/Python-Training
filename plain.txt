@@ -1,0 +1,15 @@
+From 1 to 10
+1 - variables, strings, datatype, Concatenation and escape characters.
+FINISHED>>
+
+
+From 11 to 18
+1 - Strings.
+
+
+From 103 to 116:
+OOP
+FINISHED>>
+
+
+Next one is : return to first

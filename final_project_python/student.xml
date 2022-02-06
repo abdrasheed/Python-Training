@@ -1,0 +1,17 @@
+<data>
+        <student name="ahmed">
+        	<name>ahmed</name>
+        	<password>ahmed123</password>
+        	<grade>60</grade>
+        </student>
+         <student name="sami">
+        	<name>sami</name>
+        	<password>ahmed123</password>
+        	<grade>50</grade>
+        </student>
+         <student name="waleed">
+        	<name>waleed</name>
+        	<password>ahmed123</password>
+        	<grade>40</grade>
+        </student>
+</data>

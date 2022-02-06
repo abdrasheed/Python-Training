@@ -1,0 +1,118 @@
+import xml.etree.ElementTree as ET
+import random
+# parse an xml file by name
+student_file = ET.parse('student.xml')
+students_root = student_file.getroot()
+
+questions_file = ET.parse('questions.xml')
+questions_root = questions_file.getroot()
+
+# this function to display all students with them grades
+def dispaly_students(students):    
+    for i in students.findall('student'):
+        name = i.find('name').text
+        grade = i.find('grade').text
+        print("Name: {} , Grade: {}".format(name,grade))
+
+# This Function to assign grade of students
+def edit_grade(students,std,grade):    
+    for i in students.iter('student'):
+        if i.find('name').text == std:
+            i.find('grade').text = str(grade)
+            student_file.write('student.xml')
+            print("Name: {} , Grade: {}".format(std,grade)) 
+
+
+
+#this function to display all questions
+def dispaly_questions_teatcher(questions):    
+    for i in questions.findall('question'):
+        id_q = i.get('id')
+        content = i.find('content').text
+        correct = i.find('correct').text
+        print("Question Number: {}\nContent: {}\nCorrect Answer: {}\n***".format(id_q,content,correct))
+        
+def restore_id(q_file):
+    id_q = 1 
+    for i in q_file.findall('question'):
+        i.set('id',str(id_q)) 
+        id_q +=1
+    q_file.write('questions.xml')
+
+def add_question(q_f,q_root,content,correct): 
+    q_element = ET.Element("question")
+    content_q = ET.SubElement(q_element, "content")
+    content_q.text = content
+    correct_q = ET.SubElement(q_element, "correct")
+    correct_q.text = correct
+    q_root.append(q_element)
+    q_f.write('questions.xml')
+    
+    print("The Qustion Has Been Added :):)")
+    
+       
+def dispaly_question_student(questions):    
+    arr = []
+    for i in questions.findall('question'):
+        id_q = i.get('id')
+        content = i.find('content').text
+        correct = i.find('correct').text
+        arr.append({'id':id_q,'content':content,'correct':correct})
+    randomlist = random.sample(range(0, 20), 10)
+    random_q = map(arr.__getitem__, randomlist)
+    resilt_random_q = list(random_q)
+    return resilt_random_q
+
+
+def result_test(name):
+    all_q = dispaly_question_student(questions_file)
+    cnt = 1
+    result = 0
+    for i in all_q:
+        print(cnt," : ",i['content'])
+        answer = input()
+        i['answer'] = answer
+        if i['correct'] == answer:
+            result +=10
+    edit_grade(student_file,name,result)
+    
+    
+    
+    
+    
+run = True
+while run:
+    print("\n\nWelcome To Login Home :):):)")
+    print("1. Login As Student.")
+    print("2. Login As Teacher.")
+    print("3. LOGOUT.\n\n")
+    message = int(input("Please Enter Choice:"))
+    if message == 1:
+        user_name = input("Please Enter User Name:")
+        password = input("Please Enter Password:")
+        print("1. Start The Exam Now? ANSWER WITH(Y,N)")
+        print("2. LOGOUT.")  
+        message_s = int(input("Please Enter Choice:"))
+        if message_s == 1:
+            result_test(user_name)
+        elif message_s == 2:
+            run = False
+    elif message == 2:
+        print("1. Display All Questions.")
+        print("2. Display All Student.")
+        print("3. Add New Question.")
+        print("4. LOGOUT.")
+        message_t = int(input("Please Enter Choice:"))
+        if message_t == 1:
+            dispaly_questions_teatcher(questions_file)
+        elif message_t == 2:
+            dispaly_students(student_file)
+        elif message_t == 3:
+            question_t = input("Please Enter The Question")
+            correct_t = input("Please Enter The Correct Answer For This Question")
+            add_question(questions_file,questions_root,question_t,correct_t)
+            restore_id(questions_file)
+        elif message_t == 4:
+            run = False
+    elif message == 3:
+        run = False
